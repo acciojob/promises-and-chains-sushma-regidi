@@ -1,34 +1,36 @@
-//your JS code here. If required.
-document.getElementById("userForm").addEventListener("submit", function(event) {
-  event.preventDefault();
+// Get form elements
+const ageInput = document.getElementById("age");
+const nameInput = document.getElementById("name");
+const btn = document.getElementById("btn");
 
-  const nameInput = document.getElementById("name").value.trim();
-  const ageInput = document.getElementById("age").value.trim();
-  const age = parseInt(ageInput, 10);
+// Submit button click event
+btn.addEventListener("click", function (event) {
+    event.preventDefault(); // prevent page reload
 
-  if (!nameInput || ageInput === "" || isNaN(age)) {
-    alert("Please enter valid details.");
-    return;
-  }
+    const age = ageInput.value.trim();
+    const username = nameInput.value.trim();
 
-  function checkVotingEligibility(name, age) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (age > 18) {
-          resolve(`Welcome, ${name}. You can vote.`);
-        } else {
-          reject(`Oh sorry ${name}. You aren’t old enough.`);
-        }
-      }, 4000);
+    // Validation: empty inputs
+    if (age === "" || username === "") {
+        alert("Please enter valid details.");
+        return;
+    }
+
+    // Create a promise with 4-second delay
+    const votePromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (Number(age) > 18) {
+                resolve(`Welcome, ${username}. You can vote.`);
+            } else {
+                reject(`Oh sorry ${username}. You aren't old enough.`);
+            }
+        }, 4000);
     });
-  }
 
-  checkVotingEligibility(nameInput, age)
-    .then(message => {
-      alert(message);
-    })
-    .catch(errorMessage => {
-      alert(errorMessage);
-    });
+    // Handle promise output
+    votePromise
+        .then((message) => alert(message))
+        .catch((errorMessage) => alert(errorMessage));
 });
+
 
